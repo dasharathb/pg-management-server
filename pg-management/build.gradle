@@ -1,0 +1,94 @@
+buildscript {
+    repositories {
+         mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.6.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'application'
+apply plugin: "jacoco"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+bootRepackage {
+    mainClass = 'com.bas.pgm.Application'
+}
+
+springBoot {
+    mainClass = "com.bas.pgm.Application"	
+}
+
+dependencies {	
+    
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+     
+    compile group: 'org.jsondoc', name: 'spring-boot-starter-jsondoc', version: '1.1.14'
+	compile group: 'org.jsondoc', name: 'jsondoc-springmvc', version: '1.1.14'
+	//compile group: 'org.jsondoc', name: 'jsondoc-ui', version: '1.1.14', ext: 'pom'
+
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.3.6.RELEASE'
+    testCompile group: 'com.jayway.jsonpath', name: 'json-path', version:'2.2.0'
+        
+}
+
+// logback(slf4j) commons-logging
+[configurations.runtime, configurations.default]*.exclude(module: 'commons-logging')
+
+jar.enabled = true
+bootRepackage.enabled = true
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10'
+}
+
+ext.distributionsDir = file('build/distributions')
+task createConfigArchives(dependsOn: []) {
+}
+
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
+
+tasks.withType(Test){
+	systemProperty "external.config.dir.base", "/opt/app/pg-management"
+}
+
+build.dependsOn createConfigArchives
+
+bootRun {
+   //jvmArgs = "-Dexternal.config.dir.base=/opt"
+   systemProperty "external.config.dir.base", "/opt/app/pg-management"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/pg-management"
+    }
+}

@@ -1,0 +1,6 @@
+pg-management/build
+pg-management/bin
+pg-management/.gradle
+pg-management/.settings
+pg-management/.classpath
+pg-management/.project
