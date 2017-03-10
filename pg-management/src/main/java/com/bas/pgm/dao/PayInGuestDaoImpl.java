@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import com.bas.pgm.model.Guest;
+import com.bas.pgm.model.Person;
 
 @Component(value="payInGuestDao")
 public class PayInGuestDaoImpl implements PayInGuestDao {
@@ -22,6 +23,12 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 			mongoTemplate.save(new Guest(1, guest.getGuestId()+1));		
 		}
 		return guest;
+	}
+
+	@Override
+	public void savePerson(Person person) {
+		
+		mongoTemplate.save(person);
 	}
 
 }
