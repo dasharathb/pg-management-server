@@ -1,10 +1,10 @@
 package com.bas.pgm.model;
 
-import org.springframework.data.annotation.Id;
+import java.util.Date;
 
 public class Person {
-	@Id
-	private String id;
+	
+	private String guestId;
 	private String base64Image;
 	private String name;
 	private String fName;
@@ -16,15 +16,20 @@ public class Person {
 	private String fphone;
 	private String occupation;
 	private String occName;
+	private Date joinDate;
+	private Date payDueDate;
+	private String status;
+	private Integer amount;
 	
 	public Person() {
 		super();
 	}
 
-	public Person(String id, String base64Image, String name, String fName, String gender, String address, String pin,
-			String aadharNo, String phone, String fphone, String occupation, String occName) {
+	public Person(String guestId, String base64Image, String name, String fName, String gender, String address, String pin,
+			String aadharNo, String phone, String fphone, String occupation, String occName, Date joinDate, Date payDueDate,
+			String status, Integer amount) {
 		super();
-		this.id = id;
+		this.guestId = guestId;
 		this.base64Image = base64Image;
 		this.name = name;
 		this.fName = fName;
@@ -36,14 +41,18 @@ public class Person {
 		this.fphone = fphone;
 		this.occupation = occupation;
 		this.occName = occName;
+		this.joinDate = joinDate;
+		this.payDueDate = payDueDate;
+		this.status = status;
+		this.amount = amount;
 	}
 
-	public String getId() {
-		return id;
+	public String getGuestId() {
+		return guestId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setGuestId(String guestId) {
+		this.guestId = guestId;
 	}
 
 	public String getBase64Image() {
@@ -134,12 +143,45 @@ public class Person {
 		this.occName = occName;
 	}
 
-	@Override
-	public String toString() {
-		return "Person [id=" + id + ", base64Image=" + base64Image + ", name=" + name + ", fName=" + fName + ", gender="
-				+ gender + ", address=" + address + ", pin=" + pin + ", aadharNo=" + aadharNo + ", phone=" + phone
-				+ ", fphone=" + fphone + ", occupation=" + occupation + ", occName=" + occName + "]";
+	public Date getJoinDate() {
+		return joinDate;
 	}
 
-	
+	public void setJoinDate(Date joinDate) {
+		this.joinDate = joinDate;
+	}
+
+	public Date getPayDueDate() {
+		return payDueDate;
+	}
+
+	public void setPayDueDate(Date payDueDate) {
+		this.payDueDate = payDueDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Integer getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Integer amount) {
+		this.amount = amount;
+	}
+
+	@Override
+	public String toString() {
+		return "Person [guestId=" + guestId + ", base64Image=" + base64Image + ", name=" + name + ", fName=" + fName + ", gender="
+				+ gender + ", address=" + address + ", pin=" + pin + ", aadharNo=" + aadharNo + ", phone=" + phone
+				+ ", fphone=" + fphone + ", occupation=" + occupation + ", occName=" + occName + ", joinDate="
+				+ joinDate + ", payDueDate=" + payDueDate + ", status=" + status + ", amount=" + amount + "]";
+	}
+
+		
 }
