@@ -1,9 +1,19 @@
 package com.bas.pgm.dao;
 
+//import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
+
+//import java.util.ArrayList;
+//import java.util.Date;
+//import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+//import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -54,7 +64,7 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 				);
 		HostelGuests result = getQueryAggrgationResults(aggregations, "hostel_guests");
 		
-		return null;
+		return result;
 	}
 	private HostelGuests getQueryAggrgationResults(Aggregation aggregations,String collectionNameToFetchRecords) {
 		
@@ -64,7 +74,6 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 			= mongoTemplate.aggregate(aggregations, collectionNameToFetchRecords, HostelGuests.class);
 			result = groupResults.getUniqueMappedResult();
 		}catch(Exception e){
-			//throw new AggregationException(e.getMessage());
 		}
 		return result;
 	}

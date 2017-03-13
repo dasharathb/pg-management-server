@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+         //maven { url "http://mavencentral.it.att.com:8084/nexus/content/groups/BDCOE" }
          mavenCentral()
         mavenLocal()
     }
@@ -16,6 +17,7 @@ apply plugin: 'application'
 apply plugin: "jacoco"
 
 repositories {
+   //maven { url "http://mavencentral.it.att.com:8084/nexus/content/groups/BDCOE" }
     mavenCentral()
     mavenLocal()
 }
@@ -58,9 +60,19 @@ task wrapper(type: Wrapper) {
 }
 
 ext.distributionsDir = file('build/distributions')
-task createConfigArchives(dependsOn: []) {
+task createConfigArchives(dependsOn: ['devConfigZip', 'devConfigJar']) {
 }
 
+task devConfigZip(type: Zip) {
+    from 'env/dev/'
+    destinationDir = distributionsDir
+    baseName = 'dev-config'
+}
+task devConfigJar(type: Jar) {
+    from 'env/dev/'
+    destinationDir = distributionsDir
+    baseName = 'dev-config'
+}
 
 test {
     systemProperties 'property': 'value'
