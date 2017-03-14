@@ -74,18 +74,6 @@ task devConfigJar(type: Jar) {
     baseName = 'dev-config'
 }
 
-test {
-    systemProperties 'property': 'value'
-}
-
-uploadArchives {
-    repositories {
-       flatDir {
-           dirs 'repos'
-       }
-    }
-}
-
 tasks.withType(Test){
 	systemProperty "external.config.dir.base", "/opt/app/pg-management"
 }

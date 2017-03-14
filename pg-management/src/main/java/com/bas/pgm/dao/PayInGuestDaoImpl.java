@@ -43,11 +43,11 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 		return guest;
 	}
 
-	@Override
+	/*@Override
 	public void savePerson(Person person) {
 		
 		mongoTemplate.save(person);
-	}
+	}*/
 	
 	@Override
 	public void pushMethodGuest(String objectId, Person person) {
@@ -84,4 +84,16 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 				);				
 		return aggregationOperation;
 	}
+	
+	//@Override
+	public void updateMethod(String objectId, Object metrics, int objId) {
+		try{
+			Query query = Query.query(Criteria.where("cluster").is(objectId).and("metrics.metricId").is(objId));
+			Update update = new Update().update("metrics.$", metrics);
+			mongoTemplate.upsert(query, update, Object.class);
+		}catch(Exception e){
+			Query query = Query.query(Criteria.where("cluster").is(objectId));
+			mongoTemplate.upsert(query, new Update().push("metrics", metrics), Object.class);
+		}
+    }
 }

@@ -7,7 +7,7 @@ import com.bas.pgm.model.Person;
 public interface PayInGuestDao {
 	public Guest generateGuestId();
 
-	public void savePerson(Person person);
+	//public void savePerson(Person person);
 
 	public void pushMethodGuest(String objectId, Person person);
 
