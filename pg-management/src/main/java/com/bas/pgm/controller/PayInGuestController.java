@@ -56,11 +56,11 @@ public class PayInGuestController{
 	}
 	
 	@RequestMapping(value="/api/guest/info/{userPhone}/{guestId}", method=RequestMethod.GET)
-	public @ResponseBody HostelGuests getGuestInfo(@PathVariable(value = "userPhone") String hostelNum, @PathVariable(value = "guestId") String guestId, HttpServletRequest request, HttpServletResponse response){
+	public @ResponseBody Person getGuestInfo(@PathVariable(value = "userPhone") String hostelNum, @PathVariable(value = "guestId") String guestId, HttpServletRequest request, HttpServletResponse response){
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		
-		HostelGuests guests = payInGuestService.getGuestInfo(hostelNum, guestId);
+		Person guests = payInGuestService.getGuestInfo(hostelNum, guestId);
 		return guests;
 	}
 }

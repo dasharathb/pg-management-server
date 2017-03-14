@@ -11,5 +11,5 @@ public interface PayInGuestService {
 
 	public HostelGuests getAllGuests(String hostelNum);
 
-	public HostelGuests getGuestInfo(String hostelNum, String guestId);
+	public Person getGuestInfo(String hostelNum, String guestId);
 }

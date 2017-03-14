@@ -22,13 +22,8 @@ import org.springframework.stereotype.Component;
 public class NodeAggregationAgentDaoImpl implements NodeAggregationAgentDao {
 	private final Logger logger = Logger.getLogger(NodeAggregationAgentDao.class);
 
-	@Qualifier(value="collectorMongoTemplate")
 	@Autowired
-	MongoTemplate collectorMongoTemplate;
-		
-	@Qualifier(value="dashbMongoTemplate")
-	@Autowired
-	MongoTemplate dashbMongoTemplate;
+	MongoTemplate mongoTemplate;
 	
 	@Override
 	public List getNodeDailyDataWithAggregation(Date startDate, Date endDate) {
@@ -58,7 +53,7 @@ public class NodeAggregationAgentDaoImpl implements NodeAggregationAgentDao {
 		List result = new ArrayList();
 		try{
 			AggregationResults groupResults 
-			= dashbMongoTemplate.aggregate(aggregations, collectionNameToFetchRecords, Object.class);
+			= mongoTemplate.aggregate(aggregations, collectionNameToFetchRecords, Object.class);
 			result = groupResults.getMappedResults();
 		}catch(Exception e){
 			//throw new AggregationException(e.getMessage());

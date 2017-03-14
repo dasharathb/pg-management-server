@@ -11,5 +11,5 @@ public interface PayInGuestDao {
 
 	public void pushMethodGuest(String objectId, Person person);
 
-	public HostelGuests getGuestInfo(String hostelNum, String guestId);
+	public Person getGuestInfo(String hostelNum, String guestId);
 }

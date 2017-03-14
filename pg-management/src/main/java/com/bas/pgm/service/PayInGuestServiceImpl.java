@@ -71,7 +71,7 @@ public class PayInGuestServiceImpl implements PayInGuestService {
 	}
 
 	@Override
-	public HostelGuests getGuestInfo(String hostelNum, String guestId) {
+	public Person getGuestInfo(String hostelNum, String guestId) {
 		return payInGuestDao.getGuestInfo(hostelNum, guestId);
 	}
 

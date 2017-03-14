@@ -3,7 +3,7 @@ package com.bas.pgm.dao;
 //import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
-
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 //import java.util.ArrayList;
 //import java.util.Date;
 //import java.util.List;
@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.Fields;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 //import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Component;
 import com.bas.pgm.model.Guest;
 import com.bas.pgm.model.HostelGuests;
 import com.bas.pgm.model.Person;
+import com.bas.pgm.model.PersonInfo;
 import com.bas.pgm.util.CustomAggregationOperation;
 import com.mongodb.BasicDBObject;
 
@@ -57,25 +60,27 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
     }
 
 	@Override
-	public HostelGuests getGuestInfo(String hostelNum, String guestId) {
+	public Person getGuestInfo(String hostelNum, String guestId) {
 		Aggregation aggregations = newAggregation(
 				unWindAggrBuilderGuest(),
-				match(Criteria.where("hostelNum").is(hostelNum).and("guests._id").is(guestId))				
+				match(Criteria.where("hostelNum").is(hostelNum).and("guests.guestId").is(guestId)),
+				getIntervalProjectionBuilder()
 				);
-		HostelGuests result = getQueryAggrgationResults(aggregations, "hostel_guests");
+		Person result = getQueryAggrgationResults(aggregations, "hostel_guests");
 		
 		return result;
 	}
-	private HostelGuests getQueryAggrgationResults(Aggregation aggregations,String collectionNameToFetchRecords) {
+	private Person getQueryAggrgationResults(Aggregation aggregations,String collectionNameToFetchRecords) {
 		
-		HostelGuests result = new HostelGuests();
+		PersonInfo result = new PersonInfo();
 		try{			
-			AggregationResults<HostelGuests> groupResults 
-			= mongoTemplate.aggregate(aggregations, collectionNameToFetchRecords, HostelGuests.class);
+			AggregationResults<PersonInfo> groupResults 
+			= mongoTemplate.aggregate(aggregations, collectionNameToFetchRecords, PersonInfo.class);
 			result = groupResults.getUniqueMappedResult();
 		}catch(Exception e){
 		}
-		return result;
+		System.out.println(""+result);
+		return result.getGuests();
 	}
 
 	public static CustomAggregationOperation unWindAggrBuilderGuest(){
@@ -84,7 +89,11 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 				);				
 		return aggregationOperation;
 	}
-	
+	private ProjectionOperation getIntervalProjectionBuilder() {
+		ProjectionOperation operation = project(Fields.fields("_id"))
+				.andInclude("guests");
+		return operation;
+	}
 	//@Override
 	public void updateMethod(String objectId, Object metrics, int objId) {
 		try{
