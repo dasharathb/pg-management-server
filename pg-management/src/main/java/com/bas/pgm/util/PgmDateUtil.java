@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PgmDateUtil {
  
-	String zoneId = "IST";
+	String zoneId = "UTC";
 	
 	public Date getEndOfDay(LocalDate date) {
 		LocalDateTime endOfDay = date.atTime(23, 59, 59);

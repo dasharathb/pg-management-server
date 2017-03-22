@@ -46,7 +46,7 @@ public class PayInGuestServiceImpl implements PayInGuestService {
 		person.setGuestId(guestId);
 		person.setJoinDate(pgmDateUtil.getStartOfDay(LocalDate.now()));
 		person.setPayDueDate(pgmDateUtil.getStartOfDay(LocalDate.now().plusDays(30)));
-		person.setStatus("PRESENT");
+		person.setStatus("P");
 		
 		List<Person> persons = new ArrayList<Person>();
 		HostelGuests guests = hostelGuestRepo.findOne(hostelNum);

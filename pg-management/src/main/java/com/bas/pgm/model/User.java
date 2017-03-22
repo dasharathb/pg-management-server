@@ -9,17 +9,17 @@ public class User {
 	@Id
 	private String id;
 	private String name;
-	private Integer phone;
+	private String phone;
 	private String email;
 	private String password;
-	private Integer hFee;
+	private String hFee;
 	private Date date;
 	
 	public User() {
 		super();
 	}
 
-	public User(String id, String name, Integer phone, String email, String password, Integer hFee, Date date) {
+	public User(String id, String name, String phone, String email, String password, String hFee, Date date) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -46,11 +46,11 @@ public class User {
 		this.name = name;
 	}
 
-	public Integer getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(Integer phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -70,11 +70,11 @@ public class User {
 		this.password = password;
 	}
 
-	public Integer gethFee() {
+	public String gethFee() {
 		return hFee;
 	}
 
-	public void sethFee(Integer hFee) {
+	public void sethFee(String hFee) {
 		this.hFee = hFee;
 	}
 

@@ -62,9 +62,9 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 	@Override
 	public Person getGuestInfo(String hostelNum, String guestId) {
 		Aggregation aggregations = newAggregation(
-				unWindAggrBuilderGuest(),
+				PGMDaoQueryUtil.unWindAggrBuilderGuest(),
 				match(Criteria.where("hostelNum").is(hostelNum).and("guests.guestId").is(guestId)),
-				getIntervalProjectionBuilder()
+				getProjectionBuilder()
 				);
 		Person result = getQueryAggrgationResults(aggregations, "hostel_guests");
 		
@@ -83,13 +83,13 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 		return result.getGuests();
 	}
 
-	public static CustomAggregationOperation unWindAggrBuilderGuest(){
+	/*public static CustomAggregationOperation unWindAggrBuilderGuest(){
 		CustomAggregationOperation aggregationOperation = new CustomAggregationOperation(
 				new BasicDBObject("$unwind", "$guests")
 				);				
 		return aggregationOperation;
-	}
-	private ProjectionOperation getIntervalProjectionBuilder() {
+	}*/
+	private ProjectionOperation getProjectionBuilder() {
 		ProjectionOperation operation = project(Fields.fields("_id"))
 				.andInclude("guests");
 		return operation;
