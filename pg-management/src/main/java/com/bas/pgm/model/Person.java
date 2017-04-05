@@ -20,6 +20,7 @@ public class Person {
 	private Date payDueDate;
 	private String status;
 	private Integer amount;
+	private Integer dueAmount;
 	
 	public Person() {
 		super();
@@ -27,7 +28,7 @@ public class Person {
 
 	public Person(String guestId, String base64Image, String name, String fName, String gender, String address, String pin,
 			String aadharNo, String phone, String fphone, String occupation, String occName, Date joinDate, Date payDueDate,
-			String status, Integer amount) {
+			String status, Integer amount, Integer dueAmount) {
 		super();
 		this.guestId = guestId;
 		this.base64Image = base64Image;
@@ -45,6 +46,7 @@ public class Person {
 		this.payDueDate = payDueDate;
 		this.status = status;
 		this.amount = amount;
+		this.dueAmount = dueAmount;
 	}
 
 	public String getGuestId() {
@@ -175,12 +177,21 @@ public class Person {
 		this.amount = amount;
 	}
 
+	public Integer getDueAmount() {
+		return dueAmount;
+	}
+
+	public void setDueAmount(Integer dueAmount) {
+		this.dueAmount = dueAmount;
+	}
+
 	@Override
 	public String toString() {
-		return "Person [guestId=" + guestId + ", base64Image=" + base64Image + ", name=" + name + ", fName=" + fName + ", gender="
-				+ gender + ", address=" + address + ", pin=" + pin + ", aadharNo=" + aadharNo + ", phone=" + phone
-				+ ", fphone=" + fphone + ", occupation=" + occupation + ", occName=" + occName + ", joinDate="
-				+ joinDate + ", payDueDate=" + payDueDate + ", status=" + status + ", amount=" + amount + "]";
+		return "Person [guestId=" + guestId + ", base64Image=" + base64Image + ", name=" + name + ", fName=" + fName
+				+ ", gender=" + gender + ", address=" + address + ", pin=" + pin + ", aadharNo=" + aadharNo + ", phone="
+				+ phone + ", fphone=" + fphone + ", occupation=" + occupation + ", occName=" + occName + ", joinDate="
+				+ joinDate + ", payDueDate=" + payDueDate + ", status=" + status + ", amount=" + amount + ", dueAmount="
+				+ dueAmount + "]";
 	}
 
 		

@@ -1,7 +1,9 @@
 package com.bas.pgm.service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,10 +58,10 @@ public class PayInGuestServiceImpl implements PayInGuestService {
 			guests.setHostelNum(hostelNum);
 			guests.setGuests(persons);
 			hostelGuestRepo.save(guests);
-		}else{
+		}
 			//payInGuestDao.savePerson(person);
 			payInGuestDao.pushMethodGuest(hostelNum, person);
-		}
+		//}
 		
 		return guestId;
 	}
@@ -73,6 +75,21 @@ public class PayInGuestServiceImpl implements PayInGuestService {
 	@Override
 	public Person getGuestInfo(String hostelNum, String guestId) {
 		return payInGuestDao.getGuestInfo(hostelNum, guestId);
+	}
+
+	@Override
+	public void updateFeePaidDtls(String phone, String guestId, String amount) {
+		Person person = payInGuestDao.getGuestInfo(phone, guestId);
+		
+		LocalDate date = person.getPayDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		Date feeDueDate = pgmDateUtil.getStartOfDay(date.plusDays(30));
+		Integer due = 0;
+		if(person.getDueAmount() != null )
+			due = (person.getAmount()+person.getDueAmount())-Integer.parseInt(amount);
+		else
+			due = person.getAmount()-Integer.parseInt(amount);
+		payInGuestDao.updateFeePaidDtls(phone, guestId, due, feeDueDate);
+		
 	}
 
 	

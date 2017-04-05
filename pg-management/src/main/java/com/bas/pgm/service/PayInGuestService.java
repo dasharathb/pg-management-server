@@ -12,4 +12,6 @@ public interface PayInGuestService {
 	public HostelGuests getAllGuests(String hostelNum);
 
 	public Person getGuestInfo(String hostelNum, String guestId);
+
+	public void updateFeePaidDtls(String phone, String guestId, String amount);
 }

@@ -50,14 +50,30 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value="/get/user/{phone}/{password}", method=RequestMethod.GET)
-	public @ResponseBody User getUser( @PathVariable(value = "phone") String phone, @PathVariable(value = "password") String password, HttpServletRequest request, HttpServletResponse response){
-		System.out.println("phone ::::::::: "+phone+"::::::::password:::::::::::"+password);
+	@RequestMapping(value="/get/user/{phone}/{password}/{deviceId}", method=RequestMethod.GET)
+	public @ResponseBody User getUser( @PathVariable(value = "phone") String phone, @PathVariable(value = "password") String password, @PathVariable(value = "deviceId") String deviceId, HttpServletRequest request, HttpServletResponse response){
+		System.out.println("phone ::::::::: "+phone+"::::::::password:::::::::::"+password+":::::::deviceId:::::::::::::"+deviceId);
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		
 		User result = userService.getUser(phone, password);
+		if(result != null){
+			userService.updateUserDeviceId(phone, deviceId);
+		}
+		return result;		
+	}
+	
+	@RequestMapping(value="/user/{deviceUUId}", method=RequestMethod.GET)
+	public @ResponseBody User getUserwithDeviceId( @PathVariable(value = "deviceUUId") String deviceId, HttpServletRequest request, HttpServletResponse response){
+		System.out.println("deviceId ::::::::: "+deviceId.toString());
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		
+		User result = userService.getUserWithDeviceId(deviceId);
+		System.out.println("result ::::::::::::: "+result);
+		if(result == null){
+			return new User();
+		}
 		return result;		
 	}
 	@RequestMapping(value="/api/guest/count/{phone}", method=RequestMethod.GET)
@@ -67,7 +83,7 @@ public class HomeController {
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		
 		GuestInfo result = userService.getGuestInfo(phone);
-		System.out.println("result ::::::::: total/present ::: "+result.toString());
+		//System.out.println("result ::::::::: total/present ::: "+result.toString());
 		return result;		
 	}
 	@RequestMapping(value="/api/fee/due/{phone}", method=RequestMethod.GET)

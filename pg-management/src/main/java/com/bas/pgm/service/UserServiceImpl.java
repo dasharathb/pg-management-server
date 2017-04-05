@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.bas.pgm.dao.UserDao;
 import com.bas.pgm.model.GuestInfo;
-import com.bas.pgm.model.Person;
 import com.bas.pgm.model.PersonInfo;
 import com.bas.pgm.model.User;
 
@@ -31,7 +30,8 @@ public class UserServiceImpl implements UserService {
 	public GuestInfo getGuestInfo(String phone) {
 		GuestInfo total = userDao.getTotalGuests(phone);
 		GuestInfo present = userDao.getPresentGuests(phone);
-		total.setPresentGuests(present.getPresentGuests());
+		if(present != null)
+			total.setPresentGuests(present.getPresentGuests());
 		
 		return total;
 	}
@@ -42,6 +42,18 @@ public class UserServiceImpl implements UserService {
 		//List<PersonInfo> infos = userDao.getFeeDueInfo(phone);
 		
 		return userDao.getFeeDueInfo(phone);
+	}
+
+	@Override
+	public User getUserWithDeviceId(String deviceId) {
+		
+		return userDao.getUserWithDeviceId(deviceId);
+	}
+
+	@Override
+	public void updateUserDeviceId(String phone, String deviceId) {
+		userDao.updateMethod(phone, deviceId);
+		
 	}
 
 }

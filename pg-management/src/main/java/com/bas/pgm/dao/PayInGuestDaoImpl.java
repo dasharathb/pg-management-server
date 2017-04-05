@@ -8,6 +8,8 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.proj
 //import java.util.Date;
 //import java.util.List;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -105,4 +107,18 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 			mongoTemplate.upsert(query, new Update().push("metrics", metrics), Object.class);
 		}
     }
+
+	@Override
+	public void updateFeePaidDtls(String phone, String guestId, Integer dueAmount, Date feeDueDate) {
+		// TODO Auto-generated method stub
+		try{
+			Query query = Query.query(Criteria.where("hostelNum").is(phone).and("guests.guestId").is(guestId));
+			Update update = new Update().update("guests.$.payDueDate", feeDueDate).update("guests.$.dueAmount", dueAmount);
+			mongoTemplate.upsert(query, update, HostelGuests.class);
+		}catch(Exception e){
+			Query query = Query.query(Criteria.where("hostelNum").is(phone).and("guests.guestId").is(guestId));
+			mongoTemplate.upsert(query, new Update().update("guests.$.payDueDate", feeDueDate).update("guests.$.dueAmount", dueAmount), HostelGuests.class);
+		}
+		
+	}
 }

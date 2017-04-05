@@ -3,7 +3,6 @@ package com.bas.pgm.dao;
 import java.util.List;
 
 import com.bas.pgm.model.GuestInfo;
-import com.bas.pgm.model.Person;
 import com.bas.pgm.model.PersonInfo;
 import com.bas.pgm.model.User;
 
@@ -17,4 +16,8 @@ public interface UserDao {
 	public GuestInfo getPresentGuests(String phone);
 
 	public List<PersonInfo> getFeeDueInfo(String phone);
+
+	public User getUserWithDeviceId(String deviceId);
+
+	void updateMethod(String phone, String deviceId);
 }

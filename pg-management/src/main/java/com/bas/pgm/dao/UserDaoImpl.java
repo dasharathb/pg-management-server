@@ -17,6 +17,8 @@ import org.springframework.data.mongodb.core.aggregation.Fields;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import com.bas.pgm.model.GuestInfo;
@@ -37,7 +39,9 @@ public class UserDaoImpl implements UserDao {
 	
 	@Override
 	public String savePerson(User user) {
-		mongoTemplate.save(user);
+		User exeUser = userRepo.findByPhone(user.getPhone());
+		if(exeUser == null)
+			mongoTemplate.save(user);
 		return "user created";
 	}
 
@@ -125,4 +129,22 @@ public class UserDaoImpl implements UserDao {
 		System.out.println("GuestInfo ::::::::::: "+result.toString());
 		return result;
 	}
+
+	@Override
+	public User getUserWithDeviceId(String deviceId) {
+		
+		return userRepo.findByDeviceId(deviceId);
+	}
+	
+	@Override
+	public void updateMethod(String phone, String deviceId) {
+		try{
+			Query query = Query.query(Criteria.where("phone").is(phone));
+			Update update = new Update().update("deviceId.$", deviceId);
+			mongoTemplate.upsert(query, update, User.class);
+		}catch(Exception e){
+			Query query = Query.query(Criteria.where("phone").is(phone));
+			mongoTemplate.upsert(query, new Update().update("deviceId", deviceId), User.class);
+		}
+    }
 }

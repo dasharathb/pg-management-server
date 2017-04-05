@@ -10,6 +10,7 @@ public class User {
 	private String id;
 	private String name;
 	private String phone;
+	private String deviceId;
 	private String email;
 	private String password;
 	private String hFee;
@@ -19,11 +20,13 @@ public class User {
 		super();
 	}
 
-	public User(String id, String name, String phone, String email, String password, String hFee, Date date) {
+	public User(String id, String name, String phone, String deviceId, String email, String password, String hFee,
+			Date date) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.phone = phone;
+		this.deviceId = deviceId;
 		this.email = email;
 		this.password = password;
 		this.hFee = hFee;
@@ -52,6 +55,14 @@ public class User {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
 	}
 
 	public String getEmail() {
@@ -88,8 +99,9 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", phone=" + phone + ", email=" + email + ", password=" + password
-				+ ", hFee=" + hFee + ", date=" + date + "]";
-	}	
+		return "User [id=" + id + ", name=" + name + ", phone=" + phone + ", deviceId=" + deviceId + ", email=" + email
+				+ ", password=" + password + ", hFee=" + hFee + ", date=" + date + "]";
+	}
+
 	
 }

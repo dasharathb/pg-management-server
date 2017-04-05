@@ -1,5 +1,7 @@
 package com.bas.pgm.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,13 +16,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bas.pgm.model.Guest;
 import com.bas.pgm.model.HostelGuests;
 import com.bas.pgm.model.Person;
+import com.bas.pgm.model.PersonInfo;
 import com.bas.pgm.service.PayInGuestService;
+import com.bas.pgm.service.UserService;
 
 @Controller
 public class PayInGuestController{
 
 	@Autowired
 	PayInGuestService payInGuestService;
+	
+	@Autowired
+	UserService userService;
 	
 	@RequestMapping(value="/register/guest/{userName}", method = RequestMethod.OPTIONS)
 	public @ResponseBody Person registerGuestOptions(@RequestBody Person person, HttpServletRequest request, HttpServletResponse response){
@@ -62,5 +69,16 @@ public class PayInGuestController{
 		
 		Person guests = payInGuestService.getGuestInfo(hostelNum, guestId);
 		return guests;
+	}
+	
+	@RequestMapping(value="/api/fee/paid/{phone}/{guestId}/{amount}", method=RequestMethod.GET)
+	public @ResponseBody List<PersonInfo> updateGuestFeePaid( @PathVariable(value = "phone") String phone, @PathVariable(value = "guestId") String guestId, @PathVariable(value = "amount") String amount, HttpServletRequest request, HttpServletResponse response){
+		System.out.println("phone ::::::::: "+phone);
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+		payInGuestService.updateFeePaidDtls(phone, guestId, amount);
+		List<PersonInfo> result = userService.getFeeDueInfo(phone);
+		System.out.println("result ::::::::: total/present ::: "+result.toString());
+		return result;		
 	}
 }
