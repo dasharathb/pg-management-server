@@ -17,6 +17,7 @@ import com.bas.pgm.model.Guest;
 import com.bas.pgm.model.HostelGuests;
 import com.bas.pgm.model.Person;
 import com.bas.pgm.model.PersonInfo;
+import com.bas.pgm.model.Reason;
 import com.bas.pgm.service.PayInGuestService;
 import com.bas.pgm.service.UserService;
 
@@ -80,5 +81,25 @@ public class PayInGuestController{
 		List<PersonInfo> result = userService.getFeeDueInfo(phone);
 		System.out.println("result ::::::::: total/present ::: "+result.toString());
 		return result;		
+	}
+	
+	@RequestMapping(value="/api/in/out/{phone}/{guestId}", method=RequestMethod.OPTIONS)
+	public @ResponseBody Reason updateGuestInOutInfoOps(@RequestBody Reason reason, @PathVariable(value = "phone") String phone, @PathVariable(value = "guestId") String guestId, HttpServletRequest request, HttpServletResponse response){
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+		//List<PersonInfo> result = userService.getFeeDueInfo(phone);
+		//System.out.println("result ::::::::: total/present ::: "+result.toString());
+		return reason;		
+	}
+	
+	@RequestMapping(value="/api/in/out/{phone}/{guestId}", method=RequestMethod.PUT)
+	public @ResponseBody Reason updateGuestInOutInfo(@RequestBody Reason reason, @PathVariable(value = "phone") String phone, @PathVariable(value = "guestId") String guestId, HttpServletRequest request, HttpServletResponse response){
+		System.out.println("phone :::updateGuestInOutInfo:::::: "+phone);
+		System.out.println("reason ::::::::::::::"+reason.toString());
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+		payInGuestService.updateGuestInOutInfo(phone, guestId, reason);
+		
+		return reason;		
 	}
 }

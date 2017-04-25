@@ -13,6 +13,7 @@ import com.bas.pgm.dao.PayInGuestDao;
 import com.bas.pgm.model.Guest;
 import com.bas.pgm.model.HostelGuests;
 import com.bas.pgm.model.Person;
+import com.bas.pgm.model.Reason;
 import com.bas.pgm.mongo.repo.HostelGuestRepo;
 import com.bas.pgm.util.PgmDateUtil;
 
@@ -41,7 +42,7 @@ public class PayInGuestServiceImpl implements PayInGuestService {
 		String guestId ;
 		
 		if(name.length > 1){
-			guestId = name[0].charAt(0)+name[1].charAt(0)+""+guest.getGuestId();
+			guestId = name[0].charAt(0)+""+name[1].charAt(0)+""+guest.getGuestId();
 		}else{
 			guestId = person.getName().charAt(0)+""+guest.getGuestId();
 		}
@@ -90,6 +91,11 @@ public class PayInGuestServiceImpl implements PayInGuestService {
 			due = person.getAmount()-Integer.parseInt(amount);
 		payInGuestDao.updateFeePaidDtls(phone, guestId, due, feeDueDate);
 		
+	}
+
+	@Override
+	public void updateGuestInOutInfo(String phone, String guestId, Reason reason) {
+		payInGuestDao.updateGuestInOutInfo(phone, guestId, reason);
 	}
 
 	

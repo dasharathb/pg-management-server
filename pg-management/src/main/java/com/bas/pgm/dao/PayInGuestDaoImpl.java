@@ -27,6 +27,7 @@ import com.bas.pgm.model.Guest;
 import com.bas.pgm.model.HostelGuests;
 import com.bas.pgm.model.Person;
 import com.bas.pgm.model.PersonInfo;
+import com.bas.pgm.model.Reason;
 import com.bas.pgm.util.CustomAggregationOperation;
 import com.mongodb.BasicDBObject;
 
@@ -110,15 +111,32 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 
 	@Override
 	public void updateFeePaidDtls(String phone, String guestId, Integer dueAmount, Date feeDueDate) {
-		// TODO Auto-generated method stub
 		try{
 			Query query = Query.query(Criteria.where("hostelNum").is(phone).and("guests.guestId").is(guestId));
-			Update update = new Update().update("guests.$.payDueDate", feeDueDate).update("guests.$.dueAmount", dueAmount);
-			mongoTemplate.upsert(query, update, HostelGuests.class);
+			Update updateDueDate = new Update().update("guests.$.payDueDate", feeDueDate);
+			mongoTemplate.upsert(query, updateDueDate, HostelGuests.class);
+			Update updateDueAmount = new Update().update("guests.$.dueAmount", dueAmount);
+			mongoTemplate.upsert(query, updateDueAmount, HostelGuests.class);
 		}catch(Exception e){
 			Query query = Query.query(Criteria.where("hostelNum").is(phone).and("guests.guestId").is(guestId));
 			mongoTemplate.upsert(query, new Update().update("guests.$.payDueDate", feeDueDate).update("guests.$.dueAmount", dueAmount), HostelGuests.class);
 		}
 		
 	}
+	
+	@Override
+	public void updateGuestInOutInfo(String phone, String guestId, Reason reason) {
+		try{
+			Query query = Query.query(Criteria.where("hostelNum").is(phone).and("guests.guestId").is(guestId));
+			Update updateStatus = new Update().update("guests.$.status", reason.getInout());
+			mongoTemplate.upsert(query, updateStatus, HostelGuests.class);
+			Update updateReason = new Update().update("guests.$.reason", reason.getReason());
+			mongoTemplate.upsert(query, updateReason, HostelGuests.class);
+		}catch(Exception e){
+			Query query = Query.query(Criteria.where("hostelNum").is(phone).and("guests.guestId").is(guestId));
+			mongoTemplate.upsert(query, new Update().update("guests.$.status", reason.getInout()).update("guests.$.reason", reason.getReason()), HostelGuests.class);
+		}
+		
+	}
+	
 }
