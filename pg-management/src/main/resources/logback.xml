@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds" >
+
+ 	<property name="LOG_FILE" value="/opt/app/pg-management/logs/pg-management.log"/>
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } [%t] --- %-40.40logger{39} : %m%n"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+
+        <rollingPolicy  class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>50</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+
+    <!-- Application Loggers -->
+    <logger name="com.bas.pgm">
+        <level value="info" />
+    </logger>
+
+    <!-- 3rdparty Loggers -->
+    <logger name="org.springframework.core">
+        <level value="error" />
+    </logger>
+
+    <logger name="org.springframework.beans">
+        <level value="debug"/>
+    </logger>
+
+    <logger name="org.springframework.context">
+        <level value="error" />
+    </logger>
+    <logger name="org.springframework.web">
+        <level value="error" />
+    </logger>
+    <logger name="org.springframework.data.mongodb">
+    	<level value="debug" />
+    </logger>
+    
+    <logger name="org.springframework.data.document.mongodb">
+    	<level value="debug"/>
+    </logger>
+   
+    <!-- Root Logger -->
+    <root level="error">
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>

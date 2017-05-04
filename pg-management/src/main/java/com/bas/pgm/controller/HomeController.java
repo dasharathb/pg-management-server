@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,13 +21,14 @@ import com.bas.pgm.service.UserService;
 
 @Controller
 public class HomeController {
-
+	private static final Logger logger = Logger.getLogger(HomeController.class);
+	
 	@Autowired
 	UserService userService;
 	
 	@RequestMapping(value="/ent", method=RequestMethod.GET)
 	public @ResponseBody Object entryPoint(){
-		
+		logger.info("Hello this is ... /ent service");
 		return "Hello this is entry point...";		
 	}
 	
