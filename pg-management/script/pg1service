@@ -1,0 +1,29 @@
+#!/bin/bash
+
+case "$1" in 
+start)
+   /opt/app/pg-management/pg-management/bin/pg-management &
+   echo $!>/opt/app/pg-management/pg-management.pid
+   ;;
+stop)
+   kill `cat /opt/app/pg-management/pg-management.pid`
+   rm /opt/app/pg-management/pg-management.pid
+   ;;
+restart)
+   $0 stop
+   $0 start
+   ;;
+status)
+   if [ -e /opt/app/pg-management/pg-management.pid ]; then
+      echo pg-management is running, pid=`cat /opt/app/pg-management/pg-management.pid`
+   else
+      echo pg-management is NOT running
+      exit 1
+   fi
+   ;;
+*)
+   echo "Usage: $0 {start|stop|status|restart}"
+esac
+
+exit 0 
+
