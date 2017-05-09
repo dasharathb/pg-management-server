@@ -34,7 +34,7 @@ public class HomeController {
 	
 	@RequestMapping(value="/user/register", method=RequestMethod.OPTIONS)
 	public @ResponseBody User registerUser1(@RequestBody User user, HttpServletRequest request, HttpServletResponse response){
-		System.out.println(user.toString());
+		
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		return user;		
@@ -42,11 +42,11 @@ public class HomeController {
 	
 	@RequestMapping(value="/user/register", method=RequestMethod.POST)
 	public @ResponseBody User registerUser(@RequestBody User user, HttpServletRequest request, HttpServletResponse response){
-		System.out.println(user.toString());
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		
-		String result = userService.savePerson(user);
+		//String result = 
+				userService.savePerson(user);
 		
 		return user;		
 	}
@@ -54,7 +54,6 @@ public class HomeController {
 	
 	@RequestMapping(value="/get/user/{phone}/{password}/{deviceId}", method=RequestMethod.GET)
 	public @ResponseBody User getUser( @PathVariable(value = "phone") String phone, @PathVariable(value = "password") String password, @PathVariable(value = "deviceId") String deviceId, HttpServletRequest request, HttpServletResponse response){
-		System.out.println("phone ::::::::: "+phone+"::::::::password:::::::::::"+password+":::::::deviceId:::::::::::::"+deviceId);
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		
@@ -67,12 +66,10 @@ public class HomeController {
 	
 	@RequestMapping(value="/user/{deviceUUId}", method=RequestMethod.GET)
 	public @ResponseBody User getUserwithDeviceId( @PathVariable(value = "deviceUUId") String deviceId, HttpServletRequest request, HttpServletResponse response){
-		System.out.println("deviceId ::::::::: "+deviceId.toString());
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		
 		User result = userService.getUserWithDeviceId(deviceId);
-		System.out.println("result ::::::::::::: "+result);
 		if(result == null){
 			return new User();
 		}
@@ -80,22 +77,18 @@ public class HomeController {
 	}
 	@RequestMapping(value="/api/guest/count/{phone}", method=RequestMethod.GET)
 	public @ResponseBody GuestInfo getGuestInformation( @PathVariable(value = "phone") String phone, HttpServletRequest request, HttpServletResponse response){
-		System.out.println("phone ::::::::: "+phone);
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		
 		GuestInfo result = userService.getGuestInfo(phone);
-		//System.out.println("result ::::::::: total/present ::: "+result.toString());
 		return result;		
 	}
 	@RequestMapping(value="/api/fee/due/{phone}", method=RequestMethod.GET)
 	public @ResponseBody List<PersonInfo> getGuestFeeDueInformation( @PathVariable(value = "phone") String phone, HttpServletRequest request, HttpServletResponse response){
-		System.out.println("phone ::::::::: "+phone);
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		
 		List<PersonInfo> result = userService.getFeeDueInfo(phone);
-		System.out.println("result ::::::::: total/present ::: "+result.toString());
 		return result;		
 	}
 }

@@ -9,12 +9,16 @@ import com.bas.pgm.dao.UserDao;
 import com.bas.pgm.model.GuestInfo;
 import com.bas.pgm.model.PersonInfo;
 import com.bas.pgm.model.User;
+import com.bas.pgm.mongo.repo.UserRepo;
 
 @Service(value="userService")
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserDao userDao;
+	
+	@Autowired
+	UserRepo userRepo;
 
 	@Override
 	public String savePerson(User user) {
@@ -38,10 +42,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<PersonInfo> getFeeDueInfo(String phone) {
-		
-		//List<PersonInfo> infos = userDao.getFeeDueInfo(phone);
-		
-		return userDao.getFeeDueInfo(phone);
+		User user = userRepo.findByPhone(phone);
+		List<PersonInfo> infos = userDao.getFeeDueInfo(phone);
+		for(PersonInfo personInfo :  infos){
+			personInfo.getGuests().setAmount(user.gethFee()+(personInfo.getGuests().getDueAmount() == null ? 0 : personInfo.getGuests().getDueAmount()));
+		}
+		return infos;
 	}
 
 	@Override

@@ -13,14 +13,14 @@ public class User {
 	private String deviceId;
 	private String email;
 	private String password;
-	private String hFee;
+	private Integer hFee;
 	private Date date;
 	
 	public User() {
 		super();
 	}
 
-	public User(String id, String name, String phone, String deviceId, String email, String password, String hFee,
+	public User(String id, String name, String phone, String deviceId, String email, String password, Integer hFee,
 			Date date) {
 		super();
 		this.id = id;
@@ -80,12 +80,12 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public String gethFee() {
+	
+	public Integer gethFee() {
 		return hFee;
 	}
 
-	public void sethFee(String hFee) {
+	public void sethFee(Integer hFee) {
 		this.hFee = hFee;
 	}
 

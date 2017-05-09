@@ -3,7 +3,6 @@ package com.bas.pgm.dao;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,17 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.Fields;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
-import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import com.bas.pgm.model.GuestInfo;
-import com.bas.pgm.model.HostelGuests;
-import com.bas.pgm.model.Person;
 import com.bas.pgm.model.PersonInfo;
 import com.bas.pgm.model.User;
 import com.bas.pgm.mongo.repo.UserRepo;
@@ -76,7 +71,7 @@ public class UserDaoImpl implements UserDao {
 			result = groupResults.getUniqueMappedResult();
 		}catch(Exception e){
 		}
-		System.out.println("GuestInfo ::::::::::: "+result);
+		
 		return result;
 	}
 
@@ -103,18 +98,18 @@ public class UserDaoImpl implements UserDao {
 		Aggregation aggregations = newAggregation(
 				match(Criteria.where("hostelNum").is(phone)),
 				PGMDaoQueryUtil.unWindAggrBuilderGuest(),
-				match(Criteria.where("guests.joinDate").lte(new Date()))
+				match(Criteria.where("guests.payDueDate").lte(new Date()))
 				);
 		
 		List<PersonInfo> result = getQueryAggrgationFeeDueInfo(aggregations, "hostel_guests");
 		return result;
 	}
 
-	private ProjectionOperation getProjectionBuilder() {
+	/*private ProjectionOperation getProjectionBuilder() {
 		ProjectionOperation operation = project(Fields.fields("_id"))
 				.andInclude("guests");
 		return operation;
-	}
+	}*/
 	
 	private List<PersonInfo> getQueryAggrgationFeeDueInfo(Aggregation aggregations,String collectionNameToFetchRecords) {
 		
@@ -126,7 +121,7 @@ public class UserDaoImpl implements UserDao {
 			result = groupResults.getMappedResults();
 		}catch(Exception e){
 		}
-		System.out.println("GuestInfo ::::::::::: "+result.toString());
+		
 		return result;
 	}
 

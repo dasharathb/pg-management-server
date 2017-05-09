@@ -39,10 +39,8 @@ public class PayInGuestController{
 	
 	@RequestMapping(value="/register/guest/{userName}", method = RequestMethod.POST)
 	public @ResponseBody Person registerGuest(@RequestBody Person person, @PathVariable(value = "userName") String hostelNum, HttpServletRequest request, HttpServletResponse response){
-		System.out.println(person.toString());
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-		System.out.println("userName:::::::::::::::::::"+hostelNum);
 		String guestId = payInGuestService.savePerson(person, hostelNum);
 		person.setGuestId(guestId);
 		return person;
@@ -73,13 +71,11 @@ public class PayInGuestController{
 	}
 	
 	@RequestMapping(value="/api/fee/paid/{phone}/{guestId}/{amount}", method=RequestMethod.GET)
-	public @ResponseBody List<PersonInfo> updateGuestFeePaid( @PathVariable(value = "phone") String phone, @PathVariable(value = "guestId") String guestId, @PathVariable(value = "amount") String amount, HttpServletRequest request, HttpServletResponse response){
-		System.out.println("phone ::::::::: "+phone);
+	public @ResponseBody List<PersonInfo> updateGuestFeePaid( @PathVariable(value = "phone") String phone, @PathVariable(value = "guestId") String guestId, @PathVariable(value = "amount") Integer amount, HttpServletRequest request, HttpServletResponse response){
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		payInGuestService.updateFeePaidDtls(phone, guestId, amount);
 		List<PersonInfo> result = userService.getFeeDueInfo(phone);
-		System.out.println("result ::::::::: total/present ::: "+result.toString());
 		return result;		
 	}
 	
@@ -88,18 +84,28 @@ public class PayInGuestController{
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		//List<PersonInfo> result = userService.getFeeDueInfo(phone);
-		//System.out.println("result ::::::::: total/present ::: "+result.toString());
 		return reason;		
 	}
 	
 	@RequestMapping(value="/api/in/out/{phone}/{guestId}", method=RequestMethod.PUT)
 	public @ResponseBody Reason updateGuestInOutInfo(@RequestBody Reason reason, @PathVariable(value = "phone") String phone, @PathVariable(value = "guestId") String guestId, HttpServletRequest request, HttpServletResponse response){
-		System.out.println("phone :::updateGuestInOutInfo:::::: "+phone);
-		System.out.println("reason ::::::::::::::"+reason.toString());
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		payInGuestService.updateGuestInOutInfo(phone, guestId, reason);
 		
 		return reason;		
+	}
+	
+	@RequestMapping(value="/api/guests/search/{userName}/{name}", method=RequestMethod.GET)
+	public @ResponseBody HostelGuests getGuestSearch(@PathVariable(value = "userName") String hostelNum, @PathVariable(value = "name") String name, HttpServletRequest request, HttpServletResponse response){
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+		HostelGuests guests = null;
+		if(name != null && !name.equals("")){
+			guests = payInGuestService.getSearchGuests(hostelNum, name);
+		}else {
+			guests = payInGuestService.getAllGuests(hostelNum);
+		}
+		return guests;
 	}
 }

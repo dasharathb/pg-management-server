@@ -8,7 +8,9 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.proj
 //import java.util.Date;
 //import java.util.List;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,12 +26,11 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import com.bas.pgm.model.Guest;
+import com.bas.pgm.model.GuestInfo;
 import com.bas.pgm.model.HostelGuests;
 import com.bas.pgm.model.Person;
 import com.bas.pgm.model.PersonInfo;
 import com.bas.pgm.model.Reason;
-import com.bas.pgm.util.CustomAggregationOperation;
-import com.mongodb.BasicDBObject;
 
 @Component(value="payInGuestDao")
 public class PayInGuestDaoImpl implements PayInGuestDao {
@@ -82,7 +83,6 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 			result = groupResults.getUniqueMappedResult();
 		}catch(Exception e){
 		}
-		System.out.println(""+result);
 		return result.getGuests();
 	}
 
@@ -137,6 +137,38 @@ public class PayInGuestDaoImpl implements PayInGuestDao {
 			mongoTemplate.upsert(query, new Update().update("guests.$.status", reason.getInout()).update("guests.$.reason", reason.getReason()), HostelGuests.class);
 		}
 		
+	}
+
+	@Override
+	public List<PersonInfo> getSearchGuests(String hostelNum, String name) {
+		Aggregation aggregations = newAggregation(
+				match(Criteria.where("hostelNum").is(hostelNum)),
+				PGMDaoQueryUtil.unWindAggrBuilderGuest(),
+				match(Criteria.where("guests.name").regex(name))
+				);
+		
+		List<PersonInfo> result = getQueryAggrgationTotalGuests(aggregations, "hostel_guests");
+		return result;
+		
+	}
+	
+	/*private ProjectionOperation getProjectionBuilder() {
+		ProjectionOperation operation = project(Fields.fields("_id"))
+				.andInclude("guests");
+		return operation;
+	}*/
+	
+	private List<PersonInfo> getQueryAggrgationTotalGuests(Aggregation aggregations,String collectionNameToFetchRecords) {
+		
+		List<PersonInfo> result = new ArrayList<PersonInfo>();
+		try{			
+			AggregationResults<PersonInfo> groupResults 
+			= mongoTemplate.aggregate(aggregations, collectionNameToFetchRecords, PersonInfo.class);
+			result = groupResults.getMappedResults();
+		}catch(Exception e){
+		}
+		
+		return result;
 	}
 	
 }
