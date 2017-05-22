@@ -62,4 +62,11 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+	@Override
+	public User getUpdateHostelFee(String hostelNum, String hFee) {
+		//System.out.println("out ::: "+hostelNum+"::::"+hFee);
+		userDao.updateFeeMethod(hostelNum, hFee);
+		return userRepo.findByPhone(hostelNum);
+	}
+
 }

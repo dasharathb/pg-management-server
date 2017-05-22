@@ -18,4 +18,6 @@ public interface UserService {
 	public User getUserWithDeviceId(String deviceId);
 
 	public void updateUserDeviceId(String phone, String deviceId);
+
+	public User getUpdateHostelFee(String hostelNum, String hFee);
 }

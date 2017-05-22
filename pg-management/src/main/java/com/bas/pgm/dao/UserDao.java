@@ -20,4 +20,6 @@ public interface UserDao {
 	public User getUserWithDeviceId(String deviceId);
 
 	void updateMethod(String phone, String deviceId);
+
+	public void updateFeeMethod(String hostelNum, String hFee);
 }

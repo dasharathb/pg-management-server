@@ -142,4 +142,16 @@ public class UserDaoImpl implements UserDao {
 			mongoTemplate.upsert(query, new Update().update("deviceId", deviceId), User.class);
 		}
     }
+	
+	@Override
+	public void updateFeeMethod(String phone, String hFee) {
+		try{
+			Query query = Query.query(Criteria.where("phone").is(phone));
+			Update update = new Update().update("hFee.$", hFee);
+			mongoTemplate.upsert(query, update, User.class);
+		}catch(Exception e){
+			Query query = Query.query(Criteria.where("phone").is(phone));
+			mongoTemplate.upsert(query, new Update().update("hFee", hFee), User.class);
+		}
+    }
 }

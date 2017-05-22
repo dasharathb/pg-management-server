@@ -91,4 +91,13 @@ public class HomeController {
 		List<PersonInfo> result = userService.getFeeDueInfo(phone);
 		return result;		
 	}
+	
+	@RequestMapping(value="/api/hostel/fee/{userPhone}/{hFee}", method=RequestMethod.GET)
+	public @ResponseBody User updateHostelFee(@PathVariable(value = "userPhone") String hostelNum, @PathVariable(value = "hFee") String hFee, HttpServletRequest request, HttpServletResponse response){
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+		User user = userService.getUpdateHostelFee(hostelNum, hFee);
+		
+		return user;
+	}
 }
