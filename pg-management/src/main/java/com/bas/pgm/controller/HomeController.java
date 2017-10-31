@@ -44,7 +44,7 @@ public class HomeController {
 	public @ResponseBody User registerUser(@RequestBody User user, HttpServletRequest request, HttpServletResponse response){
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-		
+		logger.info("user ::::::::::::::"+user.toString());
 		//String result = 
 				userService.savePerson(user);
 		
@@ -56,7 +56,7 @@ public class HomeController {
 	public @ResponseBody User getUser( @PathVariable(value = "phone") String phone, @PathVariable(value = "password") String password, @PathVariable(value = "deviceId") String deviceId, HttpServletRequest request, HttpServletResponse response){
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-		
+		logger.info("logged in user details:::::::::::::::::::"+phone+" pass::"+password+" diviceId::"+deviceId);
 		User result = userService.getUser(phone, password);
 		if(result != null){
 			userService.updateUserDeviceId(phone, deviceId);
@@ -68,8 +68,9 @@ public class HomeController {
 	public @ResponseBody User getUserwithDeviceId( @PathVariable(value = "deviceUUId") String deviceId, HttpServletRequest request, HttpServletResponse response){
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-		
+		logger.info("get user with deviceId info:::::::::::"+deviceId);
 		User result = userService.getUserWithDeviceId(deviceId);
+		logger.info("user details:::::::::::"+result.toString());
 		if(result == null){
 			return new User();
 		}
@@ -79,7 +80,7 @@ public class HomeController {
 	public @ResponseBody GuestInfo getGuestInformation( @PathVariable(value = "phone") String phone, HttpServletRequest request, HttpServletResponse response){
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-		
+		logger.info("get guests info:::::::::::"+phone);
 		GuestInfo result = userService.getGuestInfo(phone);
 		return result;		
 	}

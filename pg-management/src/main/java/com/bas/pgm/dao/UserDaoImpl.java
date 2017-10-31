@@ -70,6 +70,7 @@ public class UserDaoImpl implements UserDao {
 			= mongoTemplate.aggregate(aggregations, collectionNameToFetchRecords, GuestInfo.class);
 			result = groupResults.getUniqueMappedResult();
 		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
 		return result;
@@ -120,6 +121,7 @@ public class UserDaoImpl implements UserDao {
 			= mongoTemplate.aggregate(aggregations, collectionNameToFetchRecords, PersonInfo.class);
 			result = groupResults.getMappedResults();
 		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
 		return result;
